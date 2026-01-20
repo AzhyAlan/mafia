@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mafia Game - Secret Roles</title>
+    <meta name="description"
+        content="Play Mafia with friends online! Each player sees their secret role card on their device.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div class="app">
+        <!-- Particles Background -->
+        <div class="particles" id="particles"></div>
+
+        <!-- Landing Screen -->
+        <section id="landing-screen" class="screen active">
+            <div class="container">
+                <div class="logo-container">
+                    <div class="logo-icon">🎭</div>
+                    <h1 class="title">MAFIA</h1>
+                    <p class="subtitle">The Party Game</p>
+                </div>
+
+                <div class="action-buttons">
+                    <button class="btn btn-primary btn-large" id="host-btn">
+                        <span class="btn-icon">👑</span>
+                        Host Game
+                    </button>
+                    <button class="btn btn-secondary btn-large" id="join-btn">
+                        <span class="btn-icon">🚪</span>
+                        Join Game
+                    </button>
+                </div>
+
+                <div class="credits">
+                    <p>Play with friends • Each sees their secret role</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Join Game Screen -->
+        <section id="join-screen" class="screen">
+            <div class="container">
+                <button class="btn-back" id="join-back-btn">← Back</button>
+
+                <div class="join-container">
+                    <h2 class="screen-title">Join Game</h2>
+                    <p class="screen-subtitle">Enter the room code from your host</p>
+
+                    <div class="input-group">
+                        <label for="player-name-join">Your Name</label>
+                        <input type="text" id="player-name-join" placeholder="Enter your name" maxlength="20">
+                    </div>
+
+                    <div class="input-group">
+                        <label for="room-code">Room Code</label>
+                        <input type="text" id="room-code" placeholder="XXXX" maxlength="4" class="code-input">
+                    </div>
+
+                    <button class="btn btn-primary btn-large" id="join-room-btn">
+                        Join Room
+                    </button>
+
+                    <p class="error-message" id="join-error"></p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Host Setup Screen -->
+        <section id="host-screen" class="screen">
+            <div class="container">
+                <button class="btn-back" id="host-back-btn">← Back</button>
+
+                <div class="host-container">
+                    <h2 class="screen-title">Host Game</h2>
+                    <p class="screen-subtitle">Set up your game</p>
+
+                    <div class="input-group">
+                        <label for="player-name-host">Your Name</label>
+                        <input type="text" id="player-name-host" placeholder="Enter your name" maxlength="20">
+                    </div>
+
+                    <button class="btn btn-primary btn-large" id="create-room-btn">
+                        Create Room
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Lobby Screen -->
+        <section id="lobby-screen" class="screen">
+            <div class="container">
+                <div class="lobby-header">
+                    <div class="room-code-display">
+                        <span class="label">Room Code</span>
+                        <span class="code" id="display-room-code">XXXX</span>
+                        <button class="btn-copy" id="copy-code-btn" title="Copy code">📋</button>
+                    </div>
+                </div>
+
+                <div class="lobby-content">
+                    <div class="players-section">
+                        <h3>Players <span class="player-count" id="player-count">(0)</span></h3>
+                        <ul class="player-list" id="player-list">
+                            <!-- Players will be added here -->
+                        </ul>
+                    </div>
+
+                    <div class="settings-section" id="settings-section">
+                        <h3>Game Settings</h3>
+
+                        <div class="setting-group">
+                            <label>Number of Mafia</label>
+                            <div class="counter">
+                                <button class="counter-btn" id="mafia-minus">−</button>
+                                <span class="counter-value" id="mafia-count">1</span>
+                                <button class="counter-btn" id="mafia-plus">+</button>
+                            </div>
+                        </div>
+
+                        <div class="setting-group">
+                            <label>Special Roles</label>
+                            <div class="role-toggles">
+                                <button class="role-toggle active" id="toggle-doctor" data-role="doctor">
+                                    <span class="role-icon">💊</span>
+                                    <span class="role-name">Doctor</span>
+                                </button>
+                                <button class="role-toggle active" id="toggle-detective" data-role="detective">
+                                    <span class="role-icon">🔍</span>
+                                    <span class="role-name">Detective</span>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="role-distribution" id="role-distribution">
+                            <!-- Role distribution preview -->
+                        </div>
+                    </div>
+                </div>
+
+                <div class="lobby-actions">
+                    <button class="btn btn-primary btn-large" id="start-game-btn">
+                        Start Game
+                    </button>
+                    <button class="btn btn-danger" id="leave-game-btn">
+                        Leave Game
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Waiting Screen (for non-host players) -->
+        <section id="waiting-screen" class="screen">
+            <div class="container">
+                <div class="waiting-content">
+                    <div class="spinner"></div>
+                    <h2>Waiting for Host</h2>
+                    <p>The host is setting up the game...</p>
+                    <div class="players-section">
+                        <h3>Players <span class="player-count" id="waiting-player-count">(0)</span></h3>
+                        <ul class="player-list" id="waiting-player-list">
+                            <!-- Players will be added here -->
+                        </ul>
+                    </div>
+                </div>
+                <button class="btn btn-danger" id="waiting-leave-btn">
+                    Leave Game
+                </button>
+            </div>
+        </section>
+
+        <!-- Role Reveal Screen -->
+        <section id="role-screen" class="screen">
+            <div class="container">
+                <div class="role-reveal-container">
+                    <p class="tap-hint" id="tap-hint">Tap the card to reveal your role</p>
+
+                    <div class="card-container" id="card-container">
+                        <div class="card" id="role-card">
+                            <div class="card-face card-back">
+                                <div class="card-pattern"></div>
+                                <span class="card-text">🎭</span>
+                            </div>
+                            <div class="card-face card-front">
+                                <div class="role-icon" id="role-icon">👤</div>
+                                <div class="role-title" id="role-title">Your Role</div>
+                                <div class="role-team" id="role-team">Team</div>
+                                <div class="role-description" id="role-description">
+                                    Role description here
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="role-actions" id="role-actions" style="display: none;">
+                        <button class="btn btn-secondary" id="hide-role-btn">
+                            Hide Role
+                        </button>
+                        <button class="btn btn-primary" id="ready-btn">
+                            I'm Ready
+                        </button>
+                    </div>
+                </div>
+
+                <div class="ready-status" id="ready-status">
+                    <p><span id="ready-count">0</span> / <span id="total-players">0</span> players ready</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Game Ready Screen -->
+        <section id="game-ready-screen" class="screen">
+            <div class="container">
+                <div class="game-ready-content">
+                    <div class="success-icon">✅</div>
+                    <h2>Everyone's Ready!</h2>
+                    <p>All players have seen their roles.</p>
+                    <p class="hint">You can now start playing in person!</p>
+
+                    <div class="player-roles-summary" id="host-only-summary" style="display: none;">
+                        <h3>Role Distribution (Host Only)</h3>
+                        <ul id="roles-summary-list"></ul>
+                    </div>
+
+                    <button class="btn btn-primary btn-large" id="new-game-btn">
+                        New Game
+                    </button>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Toast Notification -->
+    <div class="toast" id="toast"></div>
+
+    <!-- Supabase SDK -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+    <script src="supabase-config.js"></script>
+    <script src="app.js"></script>
+</body>
+
+</html>
