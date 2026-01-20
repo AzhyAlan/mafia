@@ -23,6 +23,6 @@ function initializeSupabase() {
 
 // Check if Supabase is configured
 function isSupabaseConfigured() {
-    return SUPABASE_URL !== 'https://YOUR_PROJECT_ID.supabase.co' &&
-        SUPABASE_ANON_KEY !== 'YOUR_ANON_KEY';
+    return SUPABASE_URL !== 'https://psiaidwpvlkynjkktpvh.supabase.co' &&
+        SUPABASE_ANON_KEY !== 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBzaWFpZHdwdmxreW5qa2t0cHZoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njg5MzQ3MzUsImV4cCI6MjA4NDUxMDczNX0.o9n1dcdITnnT0fXgEgRiEfxoohpXa3BGMqyRg1SFTwY';
 }
