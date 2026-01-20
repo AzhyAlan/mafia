@@ -129,6 +129,10 @@ function createParticles() {
 // ===========================
 
 async function createRoom(roomCode, hostName) {
+    if (!supabase) {
+        throw new Error('Database not connected');
+    }
+
     const odx = generatePlayerId();
     gameState.odx = odx;
     gameState.playerName = hostName;
@@ -161,6 +165,10 @@ async function createRoom(roomCode, hostName) {
 }
 
 async function joinRoom(roomCode, playerName) {
+    if (!supabase) {
+        throw new Error('Database not connected');
+    }
+
     const odx = generatePlayerId();
     gameState.odx = odx;
     gameState.playerName = playerName;
@@ -754,16 +762,41 @@ function setupEventListeners() {
 // Initialization
 // ===========================
 
-function init() {
+function waitForSupabase(maxAttempts = 10, interval = 200) {
+    return new Promise((resolve, reject) => {
+        let attempts = 0;
+
+        function check() {
+            attempts++;
+            if (window.supabase && typeof window.supabase.createClient === 'function') {
+                resolve(true);
+            } else if (attempts >= maxAttempts) {
+                reject(new Error('Supabase SDK failed to load'));
+            } else {
+                setTimeout(check, interval);
+            }
+        }
+
+        check();
+    });
+}
+
+async function init() {
     createParticles();
+    setupEventListeners();
 
     if (isSupabaseConfigured()) {
-        initializeSupabase();
+        try {
+            await waitForSupabase();
+            initializeSupabase();
+            console.log('Supabase ready');
+        } catch (error) {
+            console.error('Supabase failed to load:', error);
+            showToast('Connection error. Please refresh the page.');
+        }
     } else {
         console.warn('Supabase not configured. Please update supabase-config.js with your credentials.');
     }
-
-    setupEventListeners();
 
     // Handle page unload
     window.addEventListener('beforeunload', () => {
